@@ -11,3 +11,8 @@
 The mock provider tests do not prove the operator's Google project configuration. Enable billing and the three required APIs, then run a live analysis and confirm location resolution, returned records, attribution and map synchronization before a public live-data launch.
 - Conventional Next.js production build: passed, including TypeScript and prerendered pages.
 - Sites / Cloudflare Worker production build: passed.
+
+## Vercel build configuration fix
+
+The default build now runs standard Next.js with its default .next output. The production build completed successfully, including TypeScript and prerendering. A post-build check parsed .next/routes-manifest.json and confirmed the home route. The prior default Vinext build did not produce this manifest. No Vercel deployment was executed as part of this local verification. Live analysis on Vercel still requires a shared quota database adapter; local SQLite is intended for a persistent single-instance server.
+

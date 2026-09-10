@@ -9,19 +9,27 @@ Requires Node.js 22.13+ (Node 24 recommended) and npm.
 ```sh
 npm ci
 cp .env.example .env.local
-npm run dev:next
+npm run dev
 ```
 
 Open http://localhost:3000. The initial dashboard uses explicitly fictional sample data. Analyze Market always calls the backend for a live analysis; missing keys produce a setup error, never fabricated live results. No credentials are needed to explore the sample, filters, charts, comparison, or schematic sample territory.
 
-For the included Sites / Cloudflare Workers deployment adapter:
+Build and run standard Next.js:
 
 ```sh
-npm run dev
 npm run build
+npm start
 ```
 
-The adapter uses Vinext to compile the same Next.js App Router source into a Worker. `npm run build:next` builds conventional Next.js. The hosted deployment uses D1 only for short-lived anonymous usage records. No Google listings are stored in D1.
+The default build uses Next.js and writes to `.next`, including `.next/routes-manifest.json`. The `dev:next`, `build:next`, and `start:next` commands are equivalent aliases. Legacy Cloudflare adapter files remain in the repository but are not used by these commands.
+
+## Vercel deployment
+
+Import this repository with the **Next.js** framework preset and repository root as the Root Directory. `vercel.json` sets the build command to `npm run build`. Leave the Output Directory override disabled; Next.js uses `.next`. Remove any previous `.next-standard` or `dist` override and redeploy the latest commit without the build cache.
+
+Add the Google keys and `RATE_LIMIT_SECRET` below to Vercel's environment variables; local `.env.local` files are not uploaded. Never commit secret values.
+
+The dashboard can deploy with sample data. Live analysis also requires a shared quota database adapter: the current local SQLite backend is for a persistent single-instance Node server and is not compatible with Vercel Functions. Moving that database to `/tmp` would lose daily quota enforcement across instances. Configure a shared transactional store before enabling live analysis on Vercel.
 
 ## Google setup
 
@@ -101,9 +109,9 @@ See `VALIDATION.md` for executed checks and limits. Live Google acceptance testi
 
 Location Intelligence Explorer provides market and competitive indicators for preliminary research. It does not predict business success or investment outcomes.
 
-## Sites local database setup
+## Legacy Cloudflare local database setup
 
-After `npm run build`, apply the generated migration to the local preview database once:
+The legacy Cloudflare adapter is not part of the default Next.js build. If explicitly using that adapter, build it with `node node_modules/vinext/dist/cli.js build`, then apply its migration to the local preview database:
 
 ```sh
 node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js d1 execute DB --local --config dist/server/wrangler.json --persist-to .wrangler/state --file drizzle/0000_third_orphan.sql
