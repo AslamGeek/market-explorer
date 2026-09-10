@@ -1,0 +1,88 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "9fe8606b-c56c-41fb-8148-e172eb87f6cc",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "analysis_usage": {
+      "name": "analysis_usage",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "day": {
+          "name": "day",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "ip_hash": {
+          "name": "ip_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "browser_hash": {
+          "name": "browser_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "session_hash": {
+          "name": "session_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "usage_ip": {
+          "name": "usage_ip",
+          "columns": [
+            "day",
+            "ip_hash"
+          ],
+          "isUnique": false
+        },
+        "usage_browser": {
+          "name": "usage_browser",
+          "columns": [
+            "day",
+            "browser_hash"
+          ],
+          "isUnique": false
+        },
+        "usage_session": {
+          "name": "usage_session",
+          "columns": [
+            "day",
+            "session_hash"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    }
+  },
+  "views": {},
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "indexes": {}
+  }
+}
